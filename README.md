@@ -2,7 +2,7 @@
 Api criada para o controle de funcionários/empresas
 
 # Clonar o projeto
-Para baixar a API em sua máquina basta realizar o clone deste repositório
+Para baixar a API em sua máquina basta realizar o clone deste repositório (https://github.com/fernandoborel/ApiEmpresas.git)
 
 # Rodar o projeto
 Para rodar o projeto em sua máquina, é necessário ter o visual studio 2022 instalado e o Postman.

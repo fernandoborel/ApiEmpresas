@@ -55,5 +55,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-
-//01:28:45 => front-end

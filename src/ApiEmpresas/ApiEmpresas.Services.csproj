@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ApiEmpresas.Infra.Data\ApiEmpresas.Infra.Data.csproj" />
+		<ProjectReference Include="..\ApiEmpresas.Messages\ApiEmpresas.Messages.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -20,6 +20,6 @@ Em Authorization... selecionar Bearer Token e colar o token.
 Realizar as operações desejadas
 
 # Libs
-Bogus
+Bogus,<br/>
 AutoMapper
 

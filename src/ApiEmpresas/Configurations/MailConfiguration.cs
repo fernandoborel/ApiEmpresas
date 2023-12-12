@@ -1,4 +1,7 @@
-﻿namespace ApiEmpresas.Services.Configurations
+﻿using ApiEmpresas.Messages.Services;
+using ApiEmpresas.Messages.Settings;
+
+namespace ApiEmpresas.Services.Configurations
 {
     /// <summary>
     /// classe de configuração para serviço de envio de e-mail
@@ -12,7 +15,16 @@
         {
             #region Capturar as configs do appsettings.json
 
+            var settings = builder.Configuration.GetSection("MailSettings");
+            builder.Services.Configure<MailSettings>(settings);
 
+            var mailSettings = settings.Get<MailSettings>();
+
+            #endregion
+
+            #region Injeção de dependência
+
+            builder.Services.AddTransient<MailService>(map => new MailService(mailSettings));
 
             #endregion
         }

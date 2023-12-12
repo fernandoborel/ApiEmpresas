@@ -19,3 +19,7 @@ Em Authorization... selecionar Bearer Token e colar o token.
 # No Swagger
 Realizar as operações desejadas
 
+# Libs
+Bogus
+AutoMapper
+

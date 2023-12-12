@@ -2,7 +2,9 @@
 using ApiEmpresas.Infra.Data.Interfaces;
 using ApiEmpresas.Messages.Services;
 using ApiEmpresas.Services.Requests;
+using ApiEmpresas.Services.Utils;
 using Bogus;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiEmpresas.Services.Controllers
@@ -15,6 +17,7 @@ namespace ApiEmpresas.Services.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly MailService _mailService;
 
+        //construtor para injeção de dependência
         public PasswordRecoverController(IUnitOfWork unitOfWork, MailService mailService)
         {
             _unitOfWork = unitOfWork;
@@ -26,19 +29,31 @@ namespace ApiEmpresas.Services.Controllers
         {
             try
             {
-                //buscar o usuário pelo e-mail
+                //buscar o usuário no banco de dados através do email
                 var usuario = _unitOfWork.UsuarioRepository.Obter(request.Email);
 
-                //verificar se o usuário existe
+                //verificar se o usuário foi encontrado
                 if (usuario != null)
                 {
-                    var novaSenha = new Faker().Internet.Password;
+                    #region Enviando email de recuperação de senha
 
-                    return StatusCode(200, new { message = "Recuperação de senha realizada com sucesso, favor verificar seu e-mail!" });
+                    var novaSenha = new Faker().Internet.Password();
+                    EnviarEmailDeRecuperacaoDeSenha(usuario, novaSenha);
+
+                    #endregion
+
+                    #region Atualizando a senha no banco de dados
+
+                    usuario.Senha = Criptografia.GetMd5(novaSenha);
+                    _unitOfWork.UsuarioRepository.Alterar(usuario);
+
+                    #endregion
+
+                    return StatusCode(200, new { message = "Recuperação de senha realizada com sucesso, por favor verifique seu email." });
                 }
                 else
                 {
-                    return StatusCode(422, new { message = "O e-mail informado não foi encontrado!"});
+                    return StatusCode(422, new { message = "O email informado não foi encontrado, por favor verifique." });
                 }
             }
             catch (Exception e)
@@ -49,10 +64,11 @@ namespace ApiEmpresas.Services.Controllers
 
         private void EnviarEmailDeRecuperacaoDeSenha(Usuario usuario, string novaSenha)
         {
-            var subject = "Recuperação de senha de usuário";
+            var subject = "Recuperação de senha de usuário - COTI Informática";
 
             var body = $@"
                      <div style='text-align: center; margin: 40px; padding: 60px; border: 2px solid #ccc; font-size: 16pt;'>
+                     <img src='https://www.cotiinformatica.com.br/imagens/logo-coti-informatica.png' />
                      <br/><br/>
                      Olá <strong>{usuario.Nome}</strong>,
                      <br/><br/>    
@@ -62,9 +78,9 @@ namespace ApiEmpresas.Services.Controllers
                      Não esqueça de, ao acessar o sistema, atualizar esta senha para outra
                      de sua preferência.
                      <br/><br/>              
-                     Att,<br/>   
-                     Equipe de Suporte
-                     </div> 
+                     Att<br/>   
+                     Equipe COTI Informatica
+                     </div>
             ";
 
             _mailService.SendMail(usuario.Email, subject, body);

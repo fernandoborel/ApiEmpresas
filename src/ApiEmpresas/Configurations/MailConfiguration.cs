@@ -4,16 +4,16 @@ using ApiEmpresas.Messages.Settings;
 namespace ApiEmpresas.Services.Configurations
 {
     /// <summary>
-    /// classe de configuração para serviço de envio de e-mail
+    /// Classe de configuração para serviço de envio de email
     /// </summary>
     public class MailConfiguration
     {
         /// <summary>
-        /// método de configuração do serviço de envio de e-mail
+        /// Método para configuração do uso do serviço de email
         /// </summary>
         public static void AddMail(WebApplicationBuilder builder)
         {
-            #region Capturar as configs do appsettings.json
+            #region Capturar as configurações do appsettings.json
 
             var settings = builder.Configuration.GetSection("MailSettings");
             builder.Services.Configure<MailSettings>(settings);
@@ -24,7 +24,7 @@ namespace ApiEmpresas.Services.Configurations
 
             #region Injeção de dependência
 
-            builder.Services.AddTransient<MailService>(map => new MailService(mailSettings));
+            builder.Services.AddTransient(map => new MailService(mailSettings));
 
             #endregion
         }

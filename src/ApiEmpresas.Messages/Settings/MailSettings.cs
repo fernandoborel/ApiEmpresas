@@ -1,7 +1,7 @@
 ﻿namespace ApiEmpresas.Messages.Settings
 {
     /// <summary>
-    /// modelo de dados para capturar os parametros de envio de e-mail
+    /// Modelo de dados para capturar os parametros de envio de email
     /// </summary>
     public class MailSettings
     {

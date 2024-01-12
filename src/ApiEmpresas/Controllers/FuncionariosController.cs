@@ -91,7 +91,7 @@ public class FuncionariosController : ControllerBase
                 return StatusCode(422, new { message = "Empresa não encontrada" });
 
             //mapeia o request
-            funcionario = _mapper.Map<Funcionario>(request);
+            _mapper.Map(request, funcionario);
 
             //salva o funcionário no banco
             _unitOfWork.FuncionarioRepository.Alterar(funcionario);

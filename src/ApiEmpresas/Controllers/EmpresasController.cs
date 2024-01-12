@@ -74,7 +74,7 @@ public class EmpresasController : ControllerBase
                 return StatusCode(422, new { message = "O CNPJ informado já está cadastrado para outra empresa!"});
 
             //atualizar os dados da empresa
-            empresa = _mapper.Map<Empresa>(request);
+            _mapper.Map(request, empresa);
 
             //alterar no banco de dados
             _unitOfWork.EmpresaRepository.Alterar(empresa);
